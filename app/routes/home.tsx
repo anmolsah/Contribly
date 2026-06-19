@@ -2,6 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search, Trophy, Clock, Heart, ExternalLink, Calendar, HelpCircle } from "lucide-react";
 import { Link } from "react-router";
+
+export function meta() {
+  return [
+    { title: "Contribly - Open Source Hackathons Hub" },
+    { name: "description", content: "Discover, track, and bookmark open-source hackathons. Explore upcoming, ongoing, and completed developer hackathons." },
+  ];
+}
 import { fetchHackathons, toggleBookmark, getCurrentUser, fetchBookmarks } from "../lib/supabase";
 import { FILTER_TAGS, type Hackathon } from "../lib/mockData";
 
