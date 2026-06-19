@@ -287,3 +287,21 @@ export async function authSignOut() {
     saveMockUser(null);
   }
 }
+
+export async function authSignInGoogle(redirectToUrl: string) {
+  if (isSupabaseConfigured && supabase) {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: redirectToUrl
+      }
+    });
+    if (error) throw error;
+  } else {
+    // Mock sandbox mode: simulate successful sign-in
+    const user = { id: 'u-google-' + Math.random().toString(36).substring(2, 9), email: 'google.developer@contribly.com' };
+    saveMockUser(user);
+    return user;
+  }
+}
+

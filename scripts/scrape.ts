@@ -31,13 +31,25 @@ function loadEnv() {
 loadEnv();
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && supabaseUrl !== 'your_supabase_url');
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const anonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+// Use Service Role Key for server-side scraping if available, fallback to anon key
+const supabaseKey = serviceRoleKey || anonKey;
+const isSupabaseConfigured = !!(supabaseUrl && supabaseKey && supabaseUrl !== 'your_supabase_url');
 
 console.log("-----------------------------------------");
 console.log("   CONTRIBLY HACKATHON FEED SCRAPER      ");
 console.log("-----------------------------------------");
 console.log(`Supabase Configured: ${isSupabaseConfigured ? 'YES' : 'NO'}`);
+if (isSupabaseConfigured) {
+  console.log(`Using Key Mode: ${serviceRoleKey ? 'Service Role Key (Admin Bypass RLS)' : 'Anon Key (Subject to RLS)'}`);
+  if (!serviceRoleKey) {
+    console.log("⚠️ WARNING: Running scraper with Anon Key. If your database RLS prevents anonymous writes,");
+    console.log("             the scraper will fail with RLS violations.");
+    console.log("             To fix this, add SUPABASE_SERVICE_ROLE_KEY=your_key in your .env file.");
+  }
+}
 console.log("-----------------------------------------");
 
 interface HackathonInput {
@@ -297,7 +309,7 @@ async function main() {
   if (isSupabaseConfigured) {
     console.log("💾 Attempting to upsert records to Supabase database...");
     try {
-      const supabase = createClient(supabaseUrl!, supabaseAnonKey!);
+      const supabase = createClient(supabaseUrl!, supabaseKey!);
       let inserted = 0;
       let errors = 0;
 

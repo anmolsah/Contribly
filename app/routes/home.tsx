@@ -290,7 +290,7 @@ export default function Home() {
             <BentoCard 
               key={h.id}
               hackathon={h}
-              isBookmarked={bookmarkedIds.includes(h.id)}
+              isBookmarked={Array.isArray(bookmarkedIds) && bookmarkedIds.includes(h.id)}
               onBookmarkToggle={(id) => bookmarkMutation.mutate(id)}
               isAuthenticated={!!user}
             />

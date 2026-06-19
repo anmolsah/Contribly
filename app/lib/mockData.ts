@@ -34,11 +34,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$100,000 USD",
     "registration_url": "https://gitcoin.co/hackathon/os-decentralized",
-    "starts_at": "2026-06-29T19:18:36.610Z",
-    "ends_at": "2026-07-09T19:18:36.610Z",
+    "starts_at": "2026-06-29T19:23:46.743Z",
+    "ends_at": "2026-07-09T19:23:46.743Z",
     "status": "upcoming",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.743Z"
   },
   {
     "id": "h2-nextjs-vite",
@@ -54,11 +54,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$50,000 USD",
     "registration_url": "https://devpost.com/hackathons/nextjs-vite-superbuild",
-    "starts_at": "2026-06-17T19:18:36.610Z",
-    "ends_at": "2026-06-24T19:18:36.610Z",
+    "starts_at": "2026-06-17T19:23:46.744Z",
+    "ends_at": "2026-06-24T19:23:46.744Z",
     "status": "ongoing",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   },
   {
     "id": "h3-ai-open-devfest",
@@ -73,11 +73,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$75,000 USD",
     "registration_url": "https://devpost.com/hackathons/ai-open-devfest",
-    "starts_at": "2026-06-18T19:18:36.610Z",
-    "ends_at": "2026-06-22T19:18:36.610Z",
+    "starts_at": "2026-06-18T19:23:46.744Z",
+    "ends_at": "2026-06-22T19:23:46.744Z",
     "status": "ongoing",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   },
   {
     "id": "h-scraped-10",
@@ -91,11 +91,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$1,000,000 USD",
     "registration_url": "https://devpost.com/hackathons/solana-hyperdrive",
-    "starts_at": "2026-06-24T19:18:32.719Z",
-    "ends_at": "2026-07-04T19:18:32.719Z",
+    "starts_at": "2026-06-24T19:23:40.538Z",
+    "ends_at": "2026-07-04T19:23:40.538Z",
     "status": "upcoming",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   },
   {
     "id": "h-scraped-11",
@@ -110,11 +110,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$80,000 USD",
     "registration_url": "https://devpost.com/hackathons/vercel-ai-hack",
-    "starts_at": "2026-06-18T19:18:32.719Z",
-    "ends_at": "2026-06-23T19:18:32.719Z",
+    "starts_at": "2026-06-18T19:23:40.538Z",
+    "ends_at": "2026-06-23T19:23:40.538Z",
     "status": "ongoing",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   },
   {
     "id": "h-scraped-12",
@@ -129,11 +129,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$150,000 USD",
     "registration_url": "https://devfolio.co/hackathons/ethindia2026",
-    "starts_at": "2026-07-19T19:18:32.722Z",
-    "ends_at": "2026-07-22T19:18:32.722Z",
+    "starts_at": "2026-07-19T19:23:40.544Z",
+    "ends_at": "2026-07-22T19:23:40.544Z",
     "status": "upcoming",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   },
   {
     "id": "h-scraped-13",
@@ -147,11 +147,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$45,000 USD",
     "registration_url": "https://devfolio.co/hackathons/polygon-builders-hack",
-    "starts_at": "2026-06-16T19:18:32.722Z",
-    "ends_at": "2026-06-21T19:18:32.722Z",
+    "starts_at": "2026-06-16T19:23:40.544Z",
+    "ends_at": "2026-06-21T19:23:40.544Z",
     "status": "ongoing",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   },
   {
     "id": "h-scraped-14",
@@ -166,11 +166,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$35,000 USD",
     "registration_url": "https://gitcoin.co/hackathon/gg24-hack",
-    "starts_at": "2026-06-09T19:18:32.723Z",
-    "ends_at": "2026-06-18T19:18:32.723Z",
+    "starts_at": "2026-06-09T19:23:40.544Z",
+    "ends_at": "2026-06-18T19:23:40.544Z",
     "status": "completed",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   },
   {
     "id": "h-scraped-15",
@@ -185,11 +185,11 @@ export const INITIAL_HACKATHONS: Hackathon[] = [
     ],
     "prize_pool": "$10,000 USD",
     "registration_url": "https://mlh.io/hackathons/autumn-2026",
-    "starts_at": "2026-07-01T19:18:32.723Z",
-    "ends_at": "2026-07-03T19:18:32.723Z",
+    "starts_at": "2026-07-01T19:23:40.544Z",
+    "ends_at": "2026-07-03T19:23:40.544Z",
     "status": "upcoming",
     "submitted_by": null,
-    "created_at": "2026-06-19T19:18:36.610Z"
+    "created_at": "2026-06-19T19:23:46.744Z"
   }
 ];
 
