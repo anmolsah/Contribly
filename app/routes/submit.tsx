@@ -8,8 +8,12 @@ import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
-    { title: "Submit Hackathon - Contribly" },
-    { name: "description", content: "Submit a new open-source hackathon to the Contribly directory." },
+    { title: "Submit a Hackathon - Contribly Directory" },
+    { name: "description", content: "Submit your open-source hackathon or programming contest to the Contribly developer directory and reach thousands of developers worldwide." },
+    { name: "keywords", content: "submit hackathon, promote developer contest, list coding challenge, post tech event" },
+    { property: "og:title", content: "Submit a Hackathon - Contribly" },
+    { property: "og:description", content: "Submit your open-source hackathon or programming contest to the Contribly developer directory." },
+    { property: "og:type", content: "website" },
   ];
 }
 

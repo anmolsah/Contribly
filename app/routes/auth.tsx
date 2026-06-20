@@ -6,8 +6,12 @@ import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
-    { title: "Authenticate - Contribly" },
-    { name: "description", content: "Sign in or register for an account on Contribly to bookmark events and submit new open-source hackathons." },
+    { title: "Join Contribly - Authentication Portal" },
+    { name: "description", content: "Sign in or create a developer profile on Contribly. Track your bookmarked hackathons, submit coding events, and build your developer portfolio." },
+    { name: "keywords", content: "contribly login, register developer account, developer profile, code portfolio" },
+    { property: "og:title", content: "Join Contribly - Developer Authentication" },
+    { property: "og:description", content: "Sign in or create a developer profile on Contribly. Track bookmarks and submit events." },
+    { property: "og:type", content: "website" },
   ];
 }
 

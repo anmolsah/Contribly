@@ -5,8 +5,15 @@ import { Link } from "react-router";
 
 export function meta() {
   return [
-    { title: "Contribly - Open Source Hackathons Hub" },
-    { name: "description", content: "Discover, track, and bookmark open-source hackathons. Explore upcoming, ongoing, and completed developer hackathons." },
+    { title: "Contribly - Open Source Hackathons Hub & Tracker" },
+    { name: "description", content: "Discover, track, and bookmark open-source hackathons. Explore upcoming, ongoing, and completed coding challenges, developer contests, and programming events." },
+    { name: "keywords", content: "hackathons, open source, developer hub, coding challenge, programming contests, tech events, developer portfolio, hackathon tracker, supabase, react" },
+    { property: "og:title", content: "Contribly - Open Source Hackathons Hub" },
+    { property: "og:description", content: "Discover, track, and bookmark open-source hackathons. Explore upcoming, ongoing, and completed developer hackathons." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Contribly - Open Source Hackathons Hub" },
+    { name: "twitter:description", content: "Discover, track, and bookmark open-source hackathons." },
   ];
 }
 import { fetchHackathons, toggleBookmark, getCurrentUser, fetchBookmarks } from "../lib/supabase";

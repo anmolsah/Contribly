@@ -11,8 +11,12 @@ import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
-    { title: "Hackathon Details - Contribly" },
-    { name: "description", content: "View hackathon details, prize information, and registration links on Contribly." },
+    { title: "Hackathon Details, Schedule, & Registration - Contribly" },
+    { name: "description", content: "View detailed hackathon schedules, eligibility criteria, prize pools, and registration guidelines. Bookmark and track developer hackathons." },
+    { name: "keywords", content: "hackathon registration, developer challenge details, prize pool, hackathon schedule, coding event" },
+    { property: "og:title", content: "Hackathon Details & Registration - Contribly" },
+    { property: "og:description", content: "View detailed hackathon schedules, eligibility criteria, prize pools, and registration guidelines." },
+    { property: "og:type", content: "website" },
   ];
 }
 

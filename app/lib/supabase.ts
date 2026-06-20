@@ -269,7 +269,7 @@ export async function authSignIn(email: string, password: string) {
   } else {
     // Simple password validation for mock demo: password must be at least 6 chars
     if (password.length < 6) throw new Error("Password must be at least 6 characters.");
-    const user = { id: 'u-' + Math.random().toString(36).substring(2, 9), email };
+    const user: MockUser = { id: 'u-' + Math.random().toString(36).substring(2, 9), email };
     saveMockUser(user);
     return user;
   }
@@ -290,7 +290,7 @@ export async function authSignUp(email: string, password: string, name?: string)
     return data.user;
   } else {
     if (password.length < 6) throw new Error("Password must be at least 6 characters.");
-    const user = { 
+    const user: MockUser = { 
       id: 'u-' + Math.random().toString(36).substring(2, 9), 
       email,
       user_metadata: {
@@ -321,7 +321,7 @@ export async function authSignInGoogle(redirectToUrl: string) {
     if (error) throw error;
   } else {
     // Mock sandbox mode: simulate successful sign-in
-    const user = { id: 'u-google-' + Math.random().toString(36).substring(2, 9), email: 'google.developer@contribly.com' };
+    const user: MockUser = { id: 'u-google-' + Math.random().toString(36).substring(2, 9), email: 'google.developer@contribly.com' };
     saveMockUser(user);
     return user;
   }

@@ -8,8 +8,12 @@ import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
-    { title: "Dashboard - Contribly" },
-    { name: "description", content: "View and manage your bookmarked and submitted open-source hackathons on Contribly." },
+    { title: "Developer Dashboard - Contribly" },
+    { name: "description", content: "Track your bookmarked open-source hackathons, view countdowns, and manage your submitted tech events." },
+    { name: "keywords", content: "hackathon dashboard, bookmarked coding events, developer tracking" },
+    { property: "og:title", content: "Developer Dashboard - Contribly" },
+    { property: "og:description", content: "Track your bookmarked open-source hackathons, view countdowns, and manage submissions." },
+    { property: "og:type", content: "website" },
   ];
 }
 
