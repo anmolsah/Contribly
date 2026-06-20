@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser, fetchHackathons, fetchBookmarks, toggleBookmark, deleteHackathon } from "../lib/supabase";
-import { Heart, Plus, ExternalLink, Calendar, Trash2, ShieldAlert } from "lucide-react";
+import { Heart, Plus, Eye, Calendar, Trash2, ShieldAlert } from "lucide-react";
 import { type Hackathon } from "../lib/mockData";
 
 export function meta() {
@@ -91,9 +91,6 @@ export default function Dashboard() {
             Account: <span style={{ fontFamily: "var(--font-mono)", color: "white" }}>{user.email}</span>
           </p>
         </div>
-        <Link to="/submit" className="btn">
-          <Plus size={14} /> Submit New Hackathon
-        </Link>
       </div>
 
       <div className="dashboard-sections">
@@ -248,15 +245,13 @@ function CompactDashboardCard({ hackathon, isOwner, onBookmarkRemove, onDelete }
             </button>
           )}
 
-          <a 
-            href={hackathon.registration_url} 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <Link 
+            to={`/hackathon/${hackathon.id}`}
             className="btn"
             style={{ padding: "0.35rem 0.5rem", fontSize: "0.7rem", background: "white", color: "black" }}
           >
-            Link <ExternalLink size={10} />
-          </a>
+            View <Eye size={10} />
+          </Link>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Search, Trophy, Clock, Heart, ExternalLink, Calendar, HelpCircle } from "lucide-react";
+import { Search, Trophy, Clock, Heart, Eye, Calendar, HelpCircle } from "lucide-react";
 import { Link } from "react-router";
 
 export function meta() {
@@ -120,15 +120,13 @@ function BentoCard({ hackathon, isBookmarked, onBookmarkToggle, isAuthenticated 
           <Clock size={12} />
           {countdownText}
         </div>
-        <a 
-          href={hackathon.registration_url} 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        <Link 
+          to={`/hackathon/${hackathon.id}`}
           className="btn"
-          style={{ padding: "0.4rem 0.75rem", background: "white", color: "black", width: "auto" }}
+          style={{ padding: "0.4rem 0.75rem", background: "white", color: "black" }}
         >
-          Join <ExternalLink size={10} style={{ marginLeft: "0.2rem" }} />
-        </a>
+          View <Eye size={12} style={{ marginLeft: "0.2rem" }} />
+        </Link>
       </div>
     </div>
   );

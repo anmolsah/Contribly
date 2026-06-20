@@ -670,6 +670,293 @@ body {
   border-color: #ef4444;
 }
 
+/* Hackathon Detail Page */
+.detail-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.breadcrumb-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  color: var(--text-primary);
+}
+
+.breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.detail-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #3b82f6, #a78bfa, #ec4899);
+  border-radius: 12px 12px 0 0;
+}
+
+.detail-header {
+  margin-bottom: 2.5rem;
+}
+
+.detail-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.detail-organizer {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.12em;
+}
+
+.detail-status-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.detail-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+  background: linear-gradient(to right, #ffffff 70%, #a1a1aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.detail-description {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 700px;
+}
+
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.detail-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.detail-info-item:hover {
+  border-color: var(--border-hover);
+}
+
+.detail-info-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.detail-info-label {
+  display: block;
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.detail-info-value {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.prize-value {
+  color: #fbbf24;
+  font-family: var(--font-mono);
+}
+
+.detail-dates-section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.detail-section-heading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 1.25rem 0;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-dates-grid {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.detail-date-block {
+  flex: 1;
+}
+
+.detail-date-label {
+  display: block;
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.detail-date-value {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.detail-date-time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.detail-date-divider {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.detail-tags-section {
+  margin-bottom: 2.5rem;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.detail-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 4px;
+  color: #38bdf8;
+}
+
+.detail-cta-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.detail-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.detail-cta-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+}
+
+.detail-bookmark-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.detail-bookmark-btn:hover {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.detail-bookmark-btn.bookmarked {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
 /* --- Mobile & Tablet Responsiveness --- */
 @media (max-width: 768px) {
   .hero-title {
@@ -691,7 +978,7 @@ body {
   .nav-links {
     width: 100%;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
   }
 
@@ -731,6 +1018,59 @@ body {
     width: 100%;
     justify-content: center;
   }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Card footer responsive fix */
+  .card-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .card-footer .prize-pool-label {
+    font-size: 0.75rem;
+  }
+
+  .card-footer .countdown-label {
+    font-size: 0.7rem;
+  }
+
+  /* Detail page responsive */
+  .detail-card {
+    padding: 1.5rem;
+  }
+
+  .detail-title {
+    font-size: 1.75rem;
+  }
+
+  .detail-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-dates-grid {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .detail-date-divider {
+    text-align: center;
+    transform: rotate(90deg);
+    font-size: 1rem;
+  }
+
+  .detail-cta-section {
+    flex-direction: column;
+  }
+
+  .detail-cta-btn,
+  .detail-bookmark-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -738,13 +1078,51 @@ body {
     font-size: 2rem;
   }
 
-  .bento-grid {
-    grid-template-columns: 1fr;
+  .hub-container {
+    padding: 2rem 1rem;
   }
 
   .bento-card {
     min-height: auto;
     padding: 1.25rem;
+  }
+
+  /* Card footer: stack vertically on small screens */
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding-top: 0.85rem;
+  }
+
+  .card-footer .prize-pool-label {
+    justify-content: flex-start;
+    font-size: 0.75rem;
+  }
+  
+  .card-footer .countdown-label {
+    justify-content: flex-start;
+    font-size: 0.7rem;
+  }
+
+  .card-footer .btn,
+  .card-footer a.btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.5rem 1rem !important;
+    box-sizing: border-box;
+  }
+
+  /* Fix for footer button containers in dashboard cards */
+  .card-footer > div {
+    display: flex;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .card-footer > div .btn,
+  .card-footer > div a.btn {
+    flex: 1;
   }
 
   .form-grid-2 {
@@ -766,6 +1144,27 @@ body {
     margin: 2rem auto;
     padding: 1.5rem;
     width: 95%;
+  }
+
+  /* Detail page small screen */
+  .detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-title {
+    font-size: 1.5rem;
+  }
+
+  .detail-description {
+    font-size: 0.9rem;
+  }
+
+  .detail-card {
+    padding: 1.25rem;
+  }
+
+  .detail-breadcrumb {
+    font-size: 0.7rem;
   }
 }
 

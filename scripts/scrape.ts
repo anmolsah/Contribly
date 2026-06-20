@@ -64,101 +64,170 @@ interface HackathonInput {
   status: 'upcoming' | 'ongoing' | 'completed';
 }
 
-const TECH_TAGS = [
-  "React", "Next.js", "Vite", "Svelte", "SolidJS", "TypeScript", "Rust", 
-  "Go", "Python", "AI", "Machine Learning", "Web3", "Solidity", 
-  "Docker", "Kubernetes", "PostgreSQL", "Supabase", "GraphQL", "FastAPI", "TailwindCSS"
-];
+// --- THEME-TO-TAG MAPPING ---
+// Maps Devpost theme names to our tech/topic tags
+const THEME_TO_TAGS: Record<string, string[]> = {
+  "Machine Learning/AI": ["AI", "Machine Learning"],
+  "Web": ["React", "TypeScript"],
+  "DevOps": ["Docker", "Kubernetes"],
+  "Databases": ["PostgreSQL", "Supabase"],
+  "Blockchain": ["Web3", "Solidity"],
+  "Gaming": ["TypeScript"],
+  "Enterprise": ["TypeScript"],
+  "Fintech": ["TypeScript", "Python"],
+  "Education": ["Python", "React"],
+  "Social Good": ["Python", "React"],
+  "Design": ["React", "TailwindCSS"],
+  "Health": ["Python", "FastAPI"],
+  "Low/No Code": ["AI"],
+  "Productivity": ["TypeScript", "React"],
+  "Robotic Process Automation": ["Python", "AI"],
+  "Beginner Friendly": [],
+  "Open Ended": [],
+  "Communication": ["TypeScript"],
+  "AR/VR": ["TypeScript"],
+  "Music/Art": ["React"],
+  "E-commerce/Retail": ["React", "Next.js"],
+  "Lifehacks": ["Python"],
+  "Mobile": ["React", "TypeScript"],
+};
 
-// Simulated feeds
-function getSimulatedDevpost(): HackathonInput[] {
-  const now = new Date();
-  return [
-    {
-      title: "Solana Hyperdrive",
-      organizer: "Solana Foundation",
-      description: "A global open-source hackathon focused on building high-performance decentralized applications, infrastructure, and tools on Solana.",
-      tags: ["Rust", "Web3", "Solidity"],
-      prize_pool: "$1,000,000 USD",
-      registration_url: "https://devpost.com/hackathons/solana-hyperdrive",
-      starts_at: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-      ends_at: new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000).toISOString(),
-      status: "upcoming"
-    },
-    {
-      title: "Vercel AI Hackathon",
-      organizer: "Vercel & Next.js",
-      description: "Build the next generation of AI-native applications utilizing Vercel AI SDK, Next.js, and open source LLMs.",
-      tags: ["AI", "Next.js", "React", "TypeScript"],
-      prize_pool: "$80,000 USD",
-      registration_url: "https://devpost.com/hackathons/vercel-ai-hack",
-      starts_at: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-      ends_at: new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString(),
-      status: "ongoing"
+function mapThemesToTags(themes: { id: number; name: string }[]): string[] {
+  const tagSet = new Set<string>();
+  for (const theme of themes) {
+    const mapped = THEME_TO_TAGS[theme.name];
+    if (mapped) {
+      mapped.forEach(t => tagSet.add(t));
     }
-  ];
+  }
+  // Always ensure at least some tags
+  if (tagSet.size === 0) {
+    tagSet.add("TypeScript");
+    tagSet.add("React");
+  }
+  return Array.from(tagSet);
 }
 
-function getSimulatedDevfolio(): HackathonInput[] {
-  const now = new Date();
-  return [
-    {
-      title: "EthIndia 2026",
-      organizer: "Devfolio Community",
-      description: "Asia's biggest Ethereum hackathon bringing together hackers, developers, and designers to build open-source Web3 protocols.",
-      tags: ["Solidity", "Web3", "Rust", "Go"],
-      prize_pool: "$150,000 USD",
-      registration_url: "https://devfolio.co/hackathons/ethindia2026",
-      starts_at: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      ends_at: new Date(now.getTime() + 33 * 24 * 60 * 60 * 1000).toISOString(),
-      status: "upcoming"
-    },
-    {
-      title: "Polygon Builders Hack",
-      organizer: "Polygon Labs",
-      description: "Deploy scalable dApps on Polygon using zero-knowledge technology and public open source contracts.",
-      tags: ["Solidity", "Web3", "TypeScript"],
-      prize_pool: "$45,000 USD",
-      registration_url: "https://devfolio.co/hackathons/polygon-builders-hack",
-      starts_at: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-      ends_at: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-      status: "ongoing"
-    }
-  ];
+function parsePrizeAmount(prizeHtml: string): string {
+  // Input: "$<span data-currency-value>2,000,000</span>" or "$<span data-currency-value>80,000</span>"
+  const match = prizeHtml.match(/>([\d,]+)</);
+  if (match) {
+    return `$${match[1]} USD`;
+  }
+  return prizeHtml.replace(/<[^>]*>/g, '').trim() + ' USD';
 }
 
-function getSimulatedGitcoin(): HackathonInput[] {
-  const now = new Date();
-  return [
-    {
-      title: "Gitcoin Grants 24 Hack",
-      organizer: "Gitcoin DAO",
-      description: "Help build Gitcoin's open source identity tools, sybil resistance, and coordination mechanics using indexers and clean UI layouts.",
-      tags: ["Go", "React", "GraphQL", "PostgreSQL"],
-      prize_pool: "$35,000 USD",
-      registration_url: "https://gitcoin.co/hackathon/gg24-hack",
-      starts_at: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-      ends_at: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-      status: "completed"
+function parseDateRange(dateStr: string): { starts_at: string; ends_at: string } {
+  // Input formats: "May 19 - Aug 17, 2026", "Jun 14 - 21, 2026", "Jun 10 - 24, 2026"
+  try {
+    const parts = dateStr.split(' - ');
+    if (parts.length === 2) {
+      const startPart = parts[0].trim(); // e.g. "May 19" or "Jun 14"
+      const endPart = parts[1].trim();   // e.g. "Aug 17, 2026" or "21, 2026"
+
+      // Check if end part has a month or just a day
+      const endHasMonth = /^[A-Za-z]/.test(endPart);
+      
+      let endDateStr: string;
+      let startDateStr: string;
+
+      if (endHasMonth) {
+        // "May 19 - Aug 17, 2026"
+        const yearMatch = endPart.match(/(\d{4})/);
+        const year = yearMatch ? yearMatch[1] : new Date().getFullYear().toString();
+        startDateStr = `${startPart}, ${year}`;
+        endDateStr = endPart;
+      } else {
+        // "Jun 14 - 21, 2026"
+        const yearMatch = endPart.match(/(\d{4})/);
+        const year = yearMatch ? yearMatch[1] : new Date().getFullYear().toString();
+        const startMonth = startPart.split(' ')[0];
+        const endDay = endPart.replace(/,?\s*\d{4}/, '').trim();
+        startDateStr = `${startPart}, ${year}`;
+        endDateStr = `${startMonth} ${endDay}, ${year}`;
+      }
+
+      const startDate = new Date(startDateStr);
+      const endDate = new Date(endDateStr);
+
+      if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+        return {
+          starts_at: startDate.toISOString(),
+          ends_at: endDate.toISOString()
+        };
+      }
     }
-  ];
+  } catch (e) {
+    // fallback
+  }
+
+  // Fallback: use current date offsets
+  const now = new Date();
+  return {
+    starts_at: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+    ends_at: new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000).toISOString()
+  };
 }
 
-function getSimulatedMLH(): HackathonInput[] {
+function determineStatus(starts_at: string, ends_at: string): 'upcoming' | 'ongoing' | 'completed' {
   const now = new Date();
-  return [
-    {
-      title: "MLH Hack Autumn 2026",
-      organizer: "Major League Hacking",
-      description: "An open-source software and tooling build sprint. Create libraries, developer assets, and utilities for the student community.",
-      tags: ["Python", "Vite", "TypeScript", "FastAPI"],
-      prize_pool: "$10,000 USD",
-      registration_url: "https://mlh.io/hackathons/autumn-2026",
-      starts_at: new Date(now.getTime() + 12 * 24 * 60 * 60 * 1000).toISOString(),
-      ends_at: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-      status: "upcoming"
+  const start = new Date(starts_at);
+  const end = new Date(ends_at);
+  
+  if (now > end) return 'completed';
+  if (now >= start && now <= end) return 'ongoing';
+  return 'upcoming';
+}
+
+// --- REAL DEVPOST API SCRAPER ---
+async function scrapeDevpost(): Promise<HackathonInput[]> {
+  console.log("🔍 Fetching REAL hackathons from Devpost API...");
+  const results: HackathonInput[] = [];
+
+  try {
+    // Fetch open/upcoming hackathons
+    const openUrl = 'https://devpost.com/api/hackathons?status[]=upcoming&status[]=open&per_page=15';
+    const openRes = await fetch(openUrl);
+    if (!openRes.ok) throw new Error(`Devpost API returned ${openRes.status}`);
+    const openData = await openRes.json();
+
+    // Fetch recently ended hackathons
+    const endedUrl = 'https://devpost.com/api/hackathons?status[]=ended&per_page=5';
+    const endedRes = await fetch(endedUrl);
+    const endedData = endedRes.ok ? await endedRes.json() : { hackathons: [] };
+
+    const allHackathons = [
+      ...(openData.hackathons || []),
+      ...(endedData.hackathons || [])
+    ];
+
+    console.log(`  📦 Received ${allHackathons.length} hackathons from Devpost`);
+
+    for (const h of allHackathons) {
+      const { starts_at, ends_at } = parseDateRange(h.submission_period_dates || '');
+      const status = determineStatus(starts_at, ends_at);
+      const tags = mapThemesToTags(h.themes || []);
+      const prizePool = parsePrizeAmount(h.prize_amount || '$0');
+
+      results.push({
+        title: h.title?.trim() || 'Untitled Hackathon',
+        organizer: h.organization_name || 'Devpost',
+        description: `${h.title} - ${h.displayed_location?.location || 'Online'} hackathon. ${h.submission_period_dates || ''}. ${h.registrations_count ? `${h.registrations_count.toLocaleString()} participants registered.` : ''}`,
+        tags,
+        prize_pool: prizePool,
+        registration_url: h.url || `https://devpost.com/`,
+        starts_at,
+        ends_at,
+        status
+      });
     }
-  ];
+
+    console.log(`  ✅ Parsed ${results.length} real hackathons from Devpost`);
+  } catch (err: any) {
+    console.error(`  ❌ Devpost scrape failed: ${err.message}`);
+  }
+
+  return results;
 }
 
 function saveToMockFile(allHackathons: HackathonInput[]) {
@@ -169,61 +238,11 @@ function saveToMockFile(allHackathons: HackathonInput[]) {
     const newMergedList: any[] = [];
     const seenUrls = new Set<string>();
 
-    const defaultMocks = [
-      {
-        id: "h1-os-decentralized",
-        title: "OS-Decentralized Hackathon",
-        organizer: "Protocol Labs & Gitcoin",
-        description: "Build open-source decentralized applications and tools for the future of the decentralized web. Focus areas include IPFS, libp2p, and smart contract developer tooling.",
-        tags: ["Rust", "Web3", "Solidity", "Go"],
-        prize_pool: "$100,000 USD",
-        registration_url: "https://gitcoin.co/hackathon/os-decentralized",
-        starts_at: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
-        ends_at: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
-        status: "upcoming" as const,
-        submitted_by: null,
-        created_at: new Date().toISOString()
-      },
-      {
-        id: "h2-nextjs-vite",
-        title: "NextJS & Vite Super-Build",
-        organizer: "Vercel & Vite Core Team",
-        description: "Build high-performance web applications using Remix, Next.js, or Vite. Submissions will be evaluated based on web vitals, bundle size optimization, and dynamic design aesthetics.",
-        tags: ["React", "Next.js", "Vite", "TypeScript", "TailwindCSS"],
-        prize_pool: "$50,000 USD",
-        registration_url: "https://devpost.com/hackathons/nextjs-vite-superbuild",
-        starts_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        ends_at: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-        status: "ongoing" as const,
-        submitted_by: null,
-        created_at: new Date().toISOString()
-      },
-      {
-        id: "h3-ai-open-devfest",
-        title: "AI Open DevFest",
-        organizer: "Hugging Face & OpenAI",
-        description: "Create open-source AI applications, agentic tools, or model integrations. Leverage open weights and standard APIs to solve real-world problems in coding, automation, and science.",
-        tags: ["AI", "Python", "FastAPI", "Machine Learning"],
-        prize_pool: "$75,000 USD",
-        registration_url: "https://devpost.com/hackathons/ai-open-devfest",
-        starts_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-        ends_at: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-        status: "ongoing" as const,
-        submitted_by: null,
-        created_at: new Date().toISOString()
-      }
-    ];
-
-    for (const item of defaultMocks) {
-      newMergedList.push(item);
-      seenUrls.add(item.registration_url);
-    }
-
-    let index = 10;
+    let index = 1;
     for (const h of allHackathons) {
       if (!seenUrls.has(h.registration_url)) {
         newMergedList.push({
-          id: `h-scraped-${index++}`,
+          id: `h-real-${index++}`,
           title: h.title,
           organizer: h.organizer,
           description: h.description,
@@ -288,21 +307,22 @@ export const FILTER_TAGS = [
 ];
 `;
     fs.writeFileSync(mockFilePath, newFileContent, 'utf8');
-    console.log(`✅ Successfully updated mockData.ts with ${newMergedList.length} total hackathons.`);
+    console.log(`✅ Successfully updated mockData.ts with ${newMergedList.length} REAL hackathons.`);
   } catch (err: any) {
     console.error("❌ Failed to update mockData.ts:", err.message);
   }
 }
 
 async function main() {
-  const allHackathons = [
-    ...getSimulatedDevpost(),
-    ...getSimulatedDevfolio(),
-    ...getSimulatedGitcoin(),
-    ...getSimulatedMLH()
-  ];
+  // Scrape REAL data from Devpost API
+  const allHackathons = await scrapeDevpost();
 
-  console.log(`🤖 Scraped a total of ${allHackathons.length} hackathons from feeds.`);
+  if (allHackathons.length === 0) {
+    console.log("⚠️ No hackathons were scraped. Check network connectivity.");
+    return;
+  }
+
+  console.log(`🤖 Scraped a total of ${allHackathons.length} REAL hackathons from Devpost.`);
 
   let dbSuccess = false;
 
@@ -310,6 +330,19 @@ async function main() {
     console.log("💾 Attempting to upsert records to Supabase database...");
     try {
       const supabase = createClient(supabaseUrl!, supabaseKey!);
+
+      // First, clear old scraped data
+      const { error: clearError } = await supabase
+        .from('hackathons')
+        .delete()
+        .is('submitted_by', null);
+      
+      if (clearError) {
+        console.warn(`  ⚠️ Could not clear old records: ${clearError.message}`);
+      } else {
+        console.log("  🗑️  Cleared old scraped records from database.");
+      }
+
       let inserted = 0;
       let errors = 0;
 
@@ -352,14 +385,12 @@ async function main() {
     }
   }
 
-  // Fallback to mock file writing if DB wasn't updated
-  if (!dbSuccess) {
-    console.log("ℹ️ Database upsert did not succeed or was skipped. Falling back to local file storage...");
-    saveToMockFile(allHackathons);
-  }
+  // Always update mock file too so the local fallback has fresh data
+  saveToMockFile(allHackathons);
 
   console.log("-----------------------------------------");
   console.log("   SCRAPING PROCESS COMPLETE             ");
+  console.log(`   ${dbSuccess ? '✅ Database updated' : '📁 Mock file updated'}`);
   console.log("-----------------------------------------");
 }
 
