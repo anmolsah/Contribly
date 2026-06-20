@@ -7,6 +7,7 @@ import {
   ArrowLeft, Trophy, Clock, Calendar, ExternalLink, 
   Heart, Tag, Users, Globe, ChevronRight 
 } from "lucide-react";
+import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
@@ -73,11 +74,21 @@ export default function HackathonDetail() {
     enabled: !!user,
   });
 
+  const toast = useToast();
+
   const bookmarkMutation = useMutation({
     mutationFn: toggleBookmark,
-    onSuccess: () => {
+    onSuccess: (wasBookmarked) => {
       queryClient.invalidateQueries({ queryKey: ["bookmarks", user?.id] });
+      if (wasBookmarked) {
+        toast.success("Hackathon added to bookmarks.");
+      } else {
+        toast.info("Hackathon removed from bookmarks.");
+      }
     },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to update bookmark.");
+    }
   });
 
   const hackathon = hackathons.find((h: Hackathon) => h.id === id);
@@ -231,16 +242,27 @@ export default function HackathonDetail() {
 
         {/* CTA Section */}
         <div className="detail-cta-section">
-          <a
-            href={hackathon.registration_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="detail-cta-btn"
-          >
-            <Globe size={18} />
-            Join This Hackathon
-            <ExternalLink size={14} />
-          </a>
+          {hackathon.status === 'completed' ? (
+            <button
+              disabled
+              className="detail-cta-btn disabled"
+              aria-disabled="true"
+            >
+              <Globe size={18} />
+              Registration Concluded
+            </button>
+          ) : (
+            <a
+              href={hackathon.registration_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="detail-cta-btn"
+            >
+              <Globe size={18} />
+              Join This Hackathon
+              <ExternalLink size={14} />
+            </a>
+          )}
 
           {user ? (
             <button

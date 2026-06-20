@@ -11,6 +11,7 @@ export function meta() {
 }
 import { fetchHackathons, toggleBookmark, getCurrentUser, fetchBookmarks } from "../lib/supabase";
 import { FILTER_TAGS, type Hackathon } from "../lib/mockData";
+import { useToast } from "../components/Toast";
 
 // Helper to format remaining time
 function getCountdownText(startsAtStr: string, endsAtStr: string, status: 'upcoming' | 'ongoing' | 'completed') {
@@ -134,7 +135,8 @@ function BentoCard({ hackathon, isBookmarked, onBookmarkToggle, isAuthenticated 
 
 export default function Home() {
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'ongoing' | 'completed'>('upcoming');
+  const toast = useToast();
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'ongoing' | 'completed'>('ongoing');
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -160,9 +162,17 @@ export default function Home() {
   // 4. Bookmark Mutation
   const bookmarkMutation = useMutation({
     mutationFn: toggleBookmark,
-    onSuccess: () => {
+    onSuccess: (wasBookmarked) => {
       queryClient.invalidateQueries({ queryKey: ["bookmarks", user?.id] });
+      if (wasBookmarked) {
+        toast.success("Hackathon added to bookmarks.");
+      } else {
+        toast.info("Hackathon removed from bookmarks.");
+      }
     },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to update bookmark.");
+    }
   });
 
   const handleTagToggle = (tag: string) => {
@@ -297,7 +307,11 @@ export default function Home() {
       ) : (
         <div className="empty-state">
           <HelpCircle className="empty-state-icon" />
-          <h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>No Hackathons Found</h3>
+          <h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>
+            {activeTab === "completed"
+              ? "No Completed Hackathons Found"
+              : "No Upcoming/Ongoing Hackathons Found"}
+          </h3>
           <p style={{ margin: 0, fontSize: "0.875rem" }}>
             No events match your selected status, search parameters, or technology filters.
           </p>

@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser, fetchHackathons, fetchBookmarks, toggleBookmark, deleteHackathon } from "../lib/supabase";
 import { Heart, Plus, Eye, Calendar, Trash2, ShieldAlert } from "lucide-react";
 import { type Hackathon } from "../lib/mockData";
+import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
@@ -15,6 +16,7 @@ export function meta() {
 export default function Dashboard() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   // Redirect if not logged in
   const { data: user, isLoading: isUserLoading } = useQuery({
@@ -44,9 +46,17 @@ export default function Dashboard() {
   // Toggle bookmark mutation
   const bookmarkMutation = useMutation({
     mutationFn: toggleBookmark,
-    onSuccess: () => {
+    onSuccess: (wasBookmarked) => {
       queryClient.invalidateQueries({ queryKey: ["bookmarks", user?.id] });
+      if (wasBookmarked) {
+        toast.success("Hackathon added to bookmarks.");
+      } else {
+        toast.info("Hackathon removed from bookmarks.");
+      }
     },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to update bookmark.");
+    }
   });
 
   // Delete submission mutation
@@ -54,7 +64,11 @@ export default function Dashboard() {
     mutationFn: deleteHackathon,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["hackathons"] });
+      toast.success("Hackathon submission deleted.");
     },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to delete submission.");
+    }
   });
 
   if (isUserLoading || isHackathonsLoading || isBookmarksLoading) {
@@ -88,7 +102,8 @@ export default function Dashboard() {
         <div>
           <h2 style={{ fontSize: "2rem", fontWeight: 800, margin: 0 }}>Developer Dashboard</h2>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", margin: "0.25rem 0 0 0" }}>
-            Account: <span style={{ fontFamily: "var(--font-mono)", color: "white" }}>{user.email}</span>
+            Welcome, <span style={{ color: "white", fontWeight: 600 }}>{user.user_metadata?.display_name || user.email?.split('@')[0] || "Developer"}</span> (
+            <span style={{ fontFamily: "var(--font-mono)", color: "var(--text-secondary)", fontSize: "0.75rem" }}>{user.email}</span>)
           </p>
         </div>
       </div>

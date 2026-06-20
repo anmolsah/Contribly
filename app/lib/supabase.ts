@@ -23,6 +23,14 @@ export const supabase = isSupabaseConfigured
   : null;
 
 // --- Mock Database State Management (Server & Client Safe) ---
+export interface MockUser {
+  id: string;
+  email: string;
+  user_metadata?: {
+    display_name?: string;
+  };
+}
+
 const STORAGE_KEYS = {
   HACKATHONS: 'contribly.data.hackathons',
   BOOKMARKS: 'contribly.data.bookmarks',
@@ -32,7 +40,7 @@ const STORAGE_KEYS = {
 // Global in-memory cache for server-side loads
 let serverHackathonsCache = [...INITIAL_HACKATHONS];
 let serverBookmarksCache: UserBookmark[] = [];
-let serverUserCache: { id: string; email: string } | null = null;
+let serverUserCache: MockUser | null = null;
 
 function isClient() {
   return typeof window !== 'undefined';
@@ -82,7 +90,7 @@ export function saveMockBookmarks(data: UserBookmark[]) {
   }
 }
 
-export function getMockUser(): { id: string; email: string } | null {
+export function getMockUser(): MockUser | null {
   if (isClient()) {
     const stored = localStorage.getItem(STORAGE_KEYS.USER);
     if (stored) {
@@ -96,7 +104,7 @@ export function getMockUser(): { id: string; email: string } | null {
   return serverUserCache;
 }
 
-export function saveMockUser(user: { id: string; email: string } | null) {
+export function saveMockUser(user: MockUser | null) {
   serverUserCache = user;
   if (isClient()) {
     if (user) {
@@ -267,14 +275,28 @@ export async function authSignIn(email: string, password: string) {
   }
 }
 
-export async function authSignUp(email: string, password: string) {
+export async function authSignUp(email: string, password: string, name?: string) {
   if (isSupabaseConfigured && supabase) {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        data: {
+          display_name: name
+        }
+      }
+    });
     if (error) throw error;
     return data.user;
   } else {
     if (password.length < 6) throw new Error("Password must be at least 6 characters.");
-    const user = { id: 'u-' + Math.random().toString(36).substring(2, 9), email };
+    const user = { 
+      id: 'u-' + Math.random().toString(36).substring(2, 9), 
+      email,
+      user_metadata: {
+        display_name: name
+      }
+    };
     saveMockUser(user);
     return user;
   }

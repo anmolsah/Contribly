@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser, submitHackathon } from "../lib/supabase";
 import { FILTER_TAGS } from "../lib/mockData";
 import { Calendar, Award, Globe, Building2, FileText, Check } from "lucide-react";
+import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
@@ -15,6 +16,7 @@ export function meta() {
 export default function Submit() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   // Redirect if not logged in
   const { data: user, isLoading: isUserLoading } = useQuery({
@@ -78,13 +80,16 @@ export default function Submit() {
     },
     onSuccess: () => {
       setSuccessMessage("Hackathon submitted successfully!");
+      toast.success("Hackathon submitted successfully! It is now live.");
       queryClient.invalidateQueries({ queryKey: ["hackathons"] });
       setTimeout(() => {
         navigate("/");
       }, 1500);
     },
     onError: (err: any) => {
-      setErrorMessage(err.message || "Failed to submit hackathon.");
+      const msg = err.message || "Failed to submit hackathon.";
+      setErrorMessage(msg);
+      toast.error(msg);
     }
   });
 

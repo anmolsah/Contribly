@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authSignIn, authSignUp, getCurrentUser, authSignInGoogle } from "../lib/supabase";
+import { useToast } from "../components/Toast";
 
 export function meta() {
   return [
@@ -12,6 +13,7 @@ export function meta() {
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,30 +21,37 @@ export default function Auth() {
   
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const authMutation = useMutation({
     mutationFn: async () => {
       setErrorMessage("");
       setSuccessMessage("");
       if (isSignUp) {
-        return await authSignUp(email, password);
+        return await authSignUp(email, password, name);
       } else {
         return await authSignIn(email, password);
       }
     },
-    onSuccess: (user) => {
+    onSuccess: (user: any) => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       if (isSignUp) {
+        const displayName = user?.user_metadata?.display_name || name || "Developer";
+        toast.success(`Account created successfully! Welcome, ${displayName}.`);
         setSuccessMessage("Account created successfully!");
         setTimeout(() => {
           navigate("/");
         }, 1500);
       } else {
+        const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || "Developer";
+        toast.success(`Welcome back, ${displayName}!`);
         navigate("/");
       }
     },
     onError: (err: any) => {
-      setErrorMessage(err.message || "An authentication error occurred.");
+      const msg = err.message || "An authentication error occurred.";
+      setErrorMessage(msg);
+      toast.error(msg);
     }
   });
 
@@ -56,6 +65,8 @@ export default function Auth() {
     onSuccess: (user) => {
       if (user) {
         queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+        const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || "Developer";
+        toast.success(`Welcome back, ${displayName}!`);
         setSuccessMessage("Logged in with Google!");
         setTimeout(() => {
           navigate("/");
@@ -63,14 +74,22 @@ export default function Auth() {
       }
     },
     onError: (err: any) => {
-      setErrorMessage(err.message || "Google Authentication failed.");
+      const msg = err.message || "Google Authentication failed.";
+      setErrorMessage(msg);
+      toast.error(msg);
     }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSignUp && !name.trim()) {
+      setErrorMessage("Please enter a username.");
+      toast.error("Please enter a username.");
+      return;
+    }
     if (!email || !password) {
       setErrorMessage("Please fill in all fields.");
+      toast.error("Please fill in all fields.");
       return;
     }
     authMutation.mutate();
@@ -103,6 +122,22 @@ export default function Auth() {
       )}
 
       <form onSubmit={handleSubmit}>
+        {isSignUp && (
+          <div className="form-group">
+            <label className="form-label" htmlFor="name">Username</label>
+            <input
+              type="text"
+              id="name"
+              className="form-control"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. octocat"
+              required
+              disabled={authMutation.isPending}
+            />
+          </div>
+        )}
+
         <div className="form-group">
           <label className="form-label" htmlFor="email">Email Address</label>
           <input
@@ -173,6 +208,7 @@ export default function Auth() {
             setIsSignUp(!isSignUp);
             setErrorMessage("");
             setSuccessMessage("");
+            setName("");
           }} 
           className="auth-switch-btn"
           disabled={authMutation.isPending}

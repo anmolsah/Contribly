@@ -14,6 +14,7 @@ import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from "@tan
 import { Trophy, LogIn, LogOut, Plus, LayoutDashboard } from "lucide-react";
 import type { Route } from "./+types/root";
 import { getCurrentUser, authSignOut, isSupabaseConfigured } from "./lib/supabase";
+import { ToastProvider } from "./components/Toast";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -50,7 +51,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
@@ -147,37 +150,6 @@ function AppContent() {
 
       {/* Main Outlet */}
       <Outlet />
-
-      {/* Subtle indicator of active connection mode */}
-      <div 
-        style={{
-          position: "fixed",
-          bottom: "1rem",
-          right: "1rem",
-          zIndex: 100,
-          background: "rgba(9, 9, 11, 0.8)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "4px",
-          padding: "0.35rem 0.6rem",
-          fontSize: "0.65rem",
-          fontFamily: "var(--font-mono)",
-          color: isSupabaseConfigured ? "#22c55e" : "#eab308",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.4rem",
-          backdropFilter: "blur(4px)"
-        }}
-      >
-        <span 
-          style={{
-            width: "6px",
-            height: "6px",
-            background: isSupabaseConfigured ? "#22c55e" : "#eab308",
-            borderRadius: "50%"
-          }}
-        ></span>
-        {isSupabaseConfigured ? "Supabase Connected" : "Local Mock Sandbox"}
-      </div>
     </div>
   );
 }
