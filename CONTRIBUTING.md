@@ -17,7 +17,7 @@ Below are guidelines and steps to help you get started with contributing to this
 1. **Fork the Repository**: Create a fork of the repository to your own GitHub account.
 2. **Clone the Fork**: Clone your fork to your local machine:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/Contribly.git
+   git clone git@github.com:anmolsah/Contribly.git
    cd Contribly
    ```
 3. **Install Dependencies**: Install the project packages:
