@@ -11,9 +11,11 @@ export function meta() {
     { property: "og:title", content: "Contribly - Open Source Hackathons Hub" },
     { property: "og:description", content: "Discover, track, and bookmark open-source hackathons. Explore upcoming, ongoing, and completed developer hackathons." },
     { property: "og:type", content: "website" },
+    { property: "og:image", content: "monogram.png" },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "Contribly - Open Source Hackathons Hub" },
     { name: "twitter:description", content: "Discover, track, and bookmark open-source hackathons." },
+    { name: "twitter:image", content: "monogram.png" },
   ];
 }
 import { fetchHackathons, toggleBookmark, getCurrentUser, fetchBookmarks } from "../lib/supabase";
